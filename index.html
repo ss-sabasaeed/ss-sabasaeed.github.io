@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Saba Saeed QA Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Saba Saeed, Software QA Engineer: web, mobile and API testing with Playwright and TypeScript.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)} body{margin:0} img{max-width:100%} [hidden]{display:none!important}
+/* Layout: an interactive test dashboard. Hero with a live bug hunt, then toolkit tabs, filterable test cases, clickable career timeline. */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#14203a; --muted:#56627a; --line:#d9dee8;
+  --pass:#1f8a5b; --pass-soft:#e2f3ea; --fail:#c8384a; --fail-soft:#fbe7ea; --warn:#b7791f;
+  --accent:#2f5bd3; --accent-soft:#e6ecfb; --term:#101a30; --term-fg:#d6deef; --term-dim:#7d8bab;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1424; --surface:#141d31; --ink:#e6ebf5; --muted:#9aa6bf; --line:#26324c;
+  --pass:#4cc58c; --pass-soft:#143528; --fail:#ef6b7b; --fail-soft:#3a1a22; --warn:#e3a94a;
+  --accent:#7f9dff; --accent-soft:#1c2950; --term:#080d19; --term-fg:#d6deef; --term-dim:#6f7d9c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1424; --surface:#141d31; --ink:#e6ebf5; --muted:#9aa6bf; --line:#26324c;
+  --pass:#4cc58c; --pass-soft:#143528; --fail:#ef6b7b; --fail-soft:#3a1a22; --warn:#e3a94a;
+  --accent:#7f9dff; --accent-soft:#1c2950; --term:#080d19; --term-fg:#d6deef; --term-dim:#6f7d9c; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.08}
+.label{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px))) 0 calc(-1*max(16px,env(safe-area-inset-left,0px)))}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{font:700 14px var(--mono);color:var(--ink);text-decoration:none;display:flex;gap:8px;align-items:center}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--pass);box-shadow:0 0 0 3px var(--pass-soft)}
+nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0;font:500 13px var(--mono)}
+nav ul a{color:var(--muted);text-decoration:none}
+nav ul a:hover{color:var(--ink)}
+.counter{font:600 12px var(--mono);color:var(--fail);background:var(--fail-soft);padding:5px 10px;border-radius:999px;white-space:nowrap}
+@media (max-width:700px){nav ul{display:none}}
+
+/* hero */
+.hero{position:relative;display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:center;padding-block:56px 48px}
+.hero>*{min-width:0}
+.status{display:inline-flex;align-items:center;gap:8px;font:500 12px var(--mono);color:var(--pass);background:var(--pass-soft);padding:6px 10px;border-radius:4px;margin-bottom:20px}
+.status i{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.hero h1{font-size:clamp(48px,8vw,88px);font-weight:800;letter-spacing:-.035em}
+.hero h1 .hl{color:var(--accent)}
+.tag{font:600 clamp(19px,2.4vw,24px)/1.3 var(--body);margin:18px 0 22px;max-width:24ch}
+.tag s{text-decoration-color:var(--fail);text-decoration-thickness:3px;color:var(--muted)}
+.plats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.plats span{font:500 12px var(--mono);border:1px solid var(--line);background:var(--surface);padding:5px 10px;border-radius:4px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font:600 14px var(--body);padding:11px 18px;border-radius:6px;border:1px solid var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);transition:transform .15s}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{transform:translateY(-2px)}
+
+/* terminal */
+.term{background:var(--term);color:var(--term-fg);border-radius:10px;font:13px/1.8 var(--mono);box-shadow:0 22px 50px -24px rgba(10,20,50,.6);overflow:hidden}
+.term-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.term-bar i{width:10px;height:10px;border-radius:50%;background:#3a4560}
+.term-bar span{margin-left:8px;color:var(--term-dim);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.run-btn{margin-left:auto;font:600 11px var(--mono);color:#0b1a12;background:#4cc58c;border:0;border-radius:4px;padding:5px 10px;cursor:pointer;flex-shrink:0}
+.term pre{margin:0;padding:16px 18px 18px;overflow-x:auto;white-space:pre;min-height:290px}
+.t-dim{color:var(--term-dim)} .t-ok{color:#4cc58c} .t-acc{color:#8fb0ff} .t-run{color:#e3a94a}
+.bar{display:block;height:4px;background:rgba(255,255,255,.08);margin:0}
+.bar b{display:block;height:100%;width:100%;background:#4cc58c;transition:width .2s}
+
+/* bug */
+.bug{position:absolute;width:38px;height:38px;border:0;background:none;padding:0;cursor:crosshair;z-index:3;
+  transition:left 1.4s cubic-bezier(.5,0,.3,1),top 1.4s cubic-bezier(.5,0,.3,1),transform .3s;color:var(--fail)}
+.bug svg{width:100%;height:100%;display:block;animation:wiggle .25s infinite alternate}
+@keyframes wiggle{to{transform:rotate(8deg)}}
+.bug.squash{transform:scale(0) rotate(90deg)}
+.hint{font:500 12px var(--mono);color:var(--muted);margin-top:14px;display:flex;gap:6px;align-items:center}
+.hint svg{width:14px;height:14px;color:var(--fail)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);font:500 13px var(--mono);padding:10px 16px;border-radius:6px;transition:.25s;z-index:30;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:84px}
+.stat{padding:18px 22px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font:800 32px/1 var(--display);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+@media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}}
+
+section{margin-bottom:88px;scroll-margin-top:80px}
+.head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.head h2{font-size:clamp(30px,4.4vw,44px);font-weight:800;letter-spacing:-.025em}
+
+/* toolkit tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tab,.filter{font:500 13px var(--mono);padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--muted)}
+.tab[aria-selected="true"],.filter[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.tool-panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:26px;display:grid;grid-template-columns:240px 1fr;gap:28px;align-items:start}
+.tool-panel>*{min-width:0}
+.tool-panel h3{font-size:24px;font-weight:700}
+.tool-panel p{color:var(--muted);margin:8px 0 0;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.skill{font:500 14px var(--body);display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:6px;background:var(--pass-soft);color:var(--ink);animation:pop .3s both}
+.skill::before{content:"✓";font:700 12px var(--mono);color:var(--pass)}
+@keyframes pop{from{transform:translateY(6px);opacity:0}}
+@media (max-width:680px){.tool-panel{grid-template-columns:1fr;gap:16px;padding:20px}}
+
+/* workflow */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.flow-step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;position:relative;transition:border-color .2s,transform .2s}
+.flow-step:hover{border-color:var(--accent);transform:translateY(-3px)}
+.flow-step .n{font:700 12px var(--mono);color:var(--accent)}
+.flow-step h3{font:700 19px var(--display);margin:6px 0 4px}
+.flow-step p{margin:0;font-size:14px;color:var(--muted)}
+@media (max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+
+/* projects */
+.cases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:900px){.cases{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.cases{grid-template-columns:1fr}}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;text-align:left;cursor:pointer;transition:border-color .2s,transform .2s}
+.case:hover{border-color:var(--accent);transform:translateY(-3px)}
+.case[hidden]{display:none}
+.case-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.case-dom{font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.result{font:700 10px var(--mono);color:var(--pass);background:var(--pass-soft);padding:3px 7px;border-radius:3px}
+.case h3{font-size:21px;font-weight:700}
+.plat-row{display:flex;gap:6px;flex-wrap:wrap}
+.plat-row span{font:500 11px var(--mono);color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:3px}
+.tested{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:10px;border-top:1px dashed var(--line)}
+.tested span{font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.case .more{display:none;font-size:14px;margin:0}
+.case.open .more{display:block}
+.case .toggle{font:500 11px var(--mono);color:var(--accent)}
+
+/* timeline */
+.tl{display:flex;gap:0;overflow-x:auto;padding:4px 2px 14px;margin-bottom:18px}
+.node{flex:1 0 140px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;background:none;border:0;padding:0 12px 0 0;cursor:pointer;text-align:left;position:relative}
+.node::before{content:"";position:absolute;left:14px;right:0;top:7px;height:2px;background:var(--line)}
+.node:last-child::before{display:none}
+.node i{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);background:var(--bg);position:relative;z-index:1;transition:.2s}
+.node b{font:600 14px var(--body)}
+.node span{font:500 12px var(--mono);color:var(--muted)}
+.node[aria-selected="true"] i{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.node.qa i{border-color:var(--pass)}
+.node.qa[aria-selected="true"] i{background:var(--pass);border-color:var(--pass);box-shadow:0 0 0 4px var(--pass-soft)}
+.role-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:grid;grid-template-columns:1fr auto;gap:8px 24px}
+.role-card>*{min-width:0}
+.role-card h3{font-size:24px;font-weight:700}
+.role-card .co{color:var(--accent);font-weight:600}
+.role-card .dt{font:500 13px var(--mono);color:var(--muted);text-align:right}
+.role-card ul{grid-column:1/-1;list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px}
+.role-card li{display:flex;gap:10px;align-items:baseline}
+.role-card li::before{content:"→";font:700 13px var(--mono);color:var(--pass)}
+@media (max-width:560px){.role-card{grid-template-columns:1fr}.role-card .dt{text-align:left}}
+
+/* creds */
+.creds{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.creds{grid-template-columns:1fr}}
+.cred{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.cred h3{font:600 16px var(--body);margin:8px 0 4px}
+.cred .meta{font:500 12px var(--mono);color:var(--muted)}
+.pill{font:600 10px var(--mono);padding:3px 7px;border-radius:3px}
+.pill.prog{color:var(--warn);background:color-mix(in srgb,var(--warn) 16%,transparent)}
+.pill.done{color:var(--pass);background:var(--pass-soft)}
+.pill.edu{color:var(--accent);background:var(--accent-soft)}
+
+/* contact */
+.contact{background:var(--term);color:var(--term-fg);border-radius:12px;padding:40px clamp(20px,4vw,48px);display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.contact>*{min-width:0}
+.contact h2{font-size:clamp(30px,4.4vw,46px);color:#fff;font-weight:800;letter-spacing:-.02em}
+.contact p{color:var(--term-dim);margin:12px 0 0}
+.rows{display:grid;gap:10px}
+.row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px 14px}
+.row .k{font:500 11px var(--mono);color:var(--term-dim);width:70px;flex-shrink:0;text-transform:uppercase;letter-spacing:.06em}
+.row .v{font:500 14px var(--mono);color:#fff;flex:1;min-width:0;overflow-wrap:anywhere;user-select:all;text-decoration:none}
+.row a.v:hover{text-decoration:underline}
+.copy{font:500 11px var(--mono);background:rgba(255,255,255,.1);color:#fff;border:0;border-radius:4px;padding:5px 9px;cursor:pointer;flex-shrink:0}
+@media (max-width:760px){.contact{grid-template-columns:1fr}}
+footer{font:12px var(--mono);color:var(--muted);text-align:center;padding-block:32px 44px}
+
+@media (max-width:860px){.hero{grid-template-columns:1fr;gap:32px;padding-block:40px 36px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="dot"></span>saba.saeed</a>
+    <ul>
+      <li><a href="#toolkit">Toolkit</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <span class="counter" id="counter" aria-live="polite">Bugs caught: 0</span>
+  </div>
+</nav>
+
+<main class="wrap" id="top">
+  <header class="hero" id="hero">
+    <div>
+      <div class="status"><i></i>Open to QA roles</div>
+      <h1>Saba<br><span class="hl">Saeed</span></h1>
+      <p class="tag">QA Engineer who finds the bugs before your users do.</p>
+      <div class="plats"><span>Web</span><span>Android</span><span>iOS</span><span>REST API</span><span>Playwright + TS</span></div>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See what I've tested</a>
+        <a class="btn" href="#contact">Contact me</a>
+      </div>
+      <p class="hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="12" cy="13" rx="6" ry="7"/><circle cx="12" cy="5" r="3"/></svg>A bug is loose on this page. Catch it.</p>
+    </div>
+
+    <div class="term">
+      <div class="term-bar"><i></i><i></i><i></i><span>saba-saeed.spec.ts</span><button class="run-btn" type="button" id="run">▶ Run tests</button></div>
+      <span class="bar"><b id="prog"></b></span>
+<pre id="out" aria-live="polite"><span class="t-dim">$</span> npx playwright test <span class="t-acc">saba-saeed.spec.ts</span>
+<span class="t-dim">Running 7 tests using 3 workers</span>
+
+<span class="t-ok">  ✓</span> finds edge cases early        <span class="t-dim">12ms</span>
+<span class="t-ok">  ✓</span> tests web, android, iOS       <span class="t-dim">18ms</span>
+<span class="t-ok">  ✓</span> validates REST APIs           <span class="t-dim">9ms</span>
+<span class="t-ok">  ✓</span> automates with playwright     <span class="t-dim">21ms</span>
+<span class="t-ok">  ✓</span> handles stripe &amp; IAP flows    <span class="t-dim">15ms</span>
+<span class="t-ok">  ✓</span> reproduces flaky bugs         <span class="t-dim">33ms</span>
+<span class="t-ok">  ✓</span> thinks like a developer       <span class="t-dim">5y+</span>
+
+<span class="t-ok">  7 passed</span> <span class="t-dim">· 0 failed · 0 flaky</span></pre>
+    </div>
+
+    <button class="bug" id="bug" type="button" aria-label="Catch the bug" style="left:46%;top:20px">
+      <svg viewBox="0 0 40 40" fill="currentColor" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16 5 12M12 22H4M12 28l-6 4M28 16l7-4M28 22h8M28 28l6 4M16 8l-3-5M24 8l3-5"/></g>
+        <ellipse cx="20" cy="24" rx="9" ry="11"/><circle cx="20" cy="11" r="5"/>
+        <path d="M20 14v20" stroke="var(--bg)" stroke-width="1.5"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>2 yrs</b><span>QA engineering</span></div>
+    <div class="stat"><b>5+ yrs</b><span>Software development</span></div>
+    <div class="stat"><b>6</b><span>Products tested</span></div>
+    <div class="stat"><b>3</b><span>Platforms</span></div>
+  </div>
+
+  <section id="toolkit">
+    <div class="head"><h2>Toolkit</h2><span class="label">pick a suite</span></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="tool-panel" role="tabpanel" id="panel">
+      <div><h3 id="p-title">Testing</h3><p id="p-desc">Every layer, from a single field to a full release.</p></div>
+      <div class="chips" id="p-chips">
+        <span class="skill">Functional</span><span class="skill">Regression</span><span class="skill">Integration</span><span class="skill">End-to-End</span><span class="skill">Exploratory</span><span class="skill">Cross-Browser</span><span class="skill">Mobile</span><span class="skill">Smoke &amp; Sanity</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <div class="head"><h2>How I test</h2><span class="label">4 steps, every release</span></div>
+    <div class="flow">
+      <div class="flow-step"><span class="n">01</span><h3>Analyze</h3><p>Spot gaps in requirements before code is done.</p></div>
+      <div class="flow-step"><span class="n">02</span><h3>Design</h3><p>Write test cases and reusable regression checklists.</p></div>
+      <div class="flow-step"><span class="n">03</span><h3>Execute</h3><p>Test, then log bugs with steps, video and logs.</p></div>
+      <div class="flow-step"><span class="n">04</span><h3>Verify</h3><p>Confirm fixes and sign off the release.</p></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="head"><h2>Tested projects</h2>
+      <div class="tabs" style="margin:0" id="filters">
+        <button class="filter" type="button" data-f="all" aria-pressed="true">All</button>
+        <button class="filter" type="button" data-f="Web" aria-pressed="false">Web</button>
+        <button class="filter" type="button" data-f="Android" aria-pressed="false">Android</button>
+        <button class="filter" type="button" data-f="iOS" aria-pressed="false">iOS</button>
+      </div>
+    </div>
+    <div class="cases" id="cases"></div>
+  </section>
+
+  <section id="journey">
+    <div class="head"><h2>Journey</h2><span class="label">developer → QA</span></div>
+    <div class="tl" role="tablist" id="tl"></div>
+    <div class="role-card" id="role">
+      <div><h3>QA Engineer</h3><div class="co">Meta Logix Tech</div></div>
+      <div class="dt">Sep 2024 – Present<br>Sahiwal</div>
+      <ul><li>Tests web, Android and iOS apps end to end</li><li>Validates APIs with Postman and Swagger</li><li>Writes Playwright tests in TypeScript</li><li>Tests payments, subscriptions and access roles</li></ul>
+    </div>
+  </section>
+
+  <section id="creds">
+    <div class="head"><h2>Credentials</h2></div>
+    <div class="creds">
+      <div class="cred"><span class="pill edu">DEGREE</span><h3>BE Software Engineering</h3><div class="meta">NUST, Islamabad · 2012–2016</div></div>
+      <div class="cred"><span class="pill done">COMPLETED</span><h3>Job Ready Software Tester Blueprint</h3><div class="meta">The Testing Academy · 2024</div></div>
+      <div class="cred"><span class="pill prog">IN PROGRESS</span><h3>Playwright with AI Automation Mastery</h3><div class="meta">The Testing Academy</div></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div>
+        <h2>Need a release you can trust?</h2>
+        <p>Let's talk.</p>
+      </div>
+      <div class="rows">
+        <div class="row"><span class="k">Email</span><span class="v" id="email">ss.sabasaeed@gmail.com</span><button class="copy" type="button" data-copy="email">Copy</button></div>
+        <div class="row"><span class="k">Phone</span><span class="v" id="phone">+92-336-7171532</span><button class="copy" type="button" data-copy="phone">Copy</button></div>
+        <div class="row"><span class="k">LinkedIn</span><a class="v" href="https://linkedin.com/in/saba-saeed/" target="_blank" rel="noopener">linkedin.com/in/saba-saeed</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="wrap">© Saba Saeed · 0 known defects on this page</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var toastT;
+  function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},1800)}
+
+  /* ---------- test runner ---------- */
+  var tests=[["finds edge cases early","12ms"],["tests web, android, iOS","18ms"],["validates REST APIs","9ms"],["automates with playwright","21ms"],["handles stripe & IAP flows","15ms"],["reproduces flaky bugs","33ms"],["thinks like a developer","5y+"]];
+  var esc=function(s){return s.replace(/&/g,'&amp;')};
+  var head='<span class="t-dim">$</span> npx playwright test <span class="t-acc">saba-saeed.spec.ts</span>\n<span class="t-dim">Running 7 tests using 3 workers</span>\n\n';
+  var pad=function(s){while(s.length<30)s+=' ';return s};
+  var running=false;
+  $('run').addEventListener('click',function(){
+    if(running)return; running=true; var i=0, out=$('out'), prog=$('prog'); prog.style.width='0%';
+    function step(){
+      var body='';
+      for(var j=0;j<tests.length;j++){
+        if(j<i) body+='<span class="t-ok">  ✓</span> '+esc(pad(tests[j][0]))+'<span class="t-dim">'+tests[j][1]+'</span>\n';
+        else if(j===i) body+='<span class="t-run">  ◌</span> '+esc(tests[j][0])+'<span class="t-dim"> …</span>\n';
+      }
+      if(i>=tests.length){body+='\n<span class="t-ok">  7 passed</span> <span class="t-dim">· 0 failed · 0 flaky</span>';running=false;toast('All 7 tests passed');}
+      out.innerHTML=head+body; prog.style.width=(Math.min(i,tests.length)/tests.length*100)+'%';
+      if(i++<tests.length) setTimeout(step,reduce?0:380);
+    }
+    step();
+  });
+
+  /* ---------- bug hunt ---------- */
+  var bug=$('bug'), hero=$('hero'), caught=0;
+  function move(){
+    var w=hero.clientWidth-40, h=hero.clientHeight-40;
+    bug.style.left=Math.max(0,Math.random()*w)+'px'; bug.style.top=Math.max(0,Math.random()*h)+'px';
+  }
+  var mover=reduce?null:setInterval(move,1900);
+  bug.addEventListener('click',function(){
+    caught++; $('counter').textContent='Bugs caught: '+caught;
+    toast('BUG-'+String(caught).padStart(3,'0')+' logged · status: Fixed');
+    bug.classList.add('squash');
+    setTimeout(function(){move();bug.classList.remove('squash')},700);
+  });
+
+  /* ---------- toolkit ---------- */
+  var suites={
+    "Testing":["Every layer, from a single field to a full release.",["Functional","Regression","Integration","End-to-End","Exploratory","Cross-Browser","Mobile","Smoke & Sanity"]],
+    "API & Data":["Checking what the screen doesn't show.",["Postman","Swagger","REST APIs","SQL","Response validation","Auth testing"]],
+    "Automation":["Repeatable checks for critical flows.",["Playwright","TypeScript","Web UI automation","Regression suites","n8n workflows"]],
+    "Process":["Bugs reported so devs can fix them fast.",["Jira","Agile / Scrum","STLC","Test planning","Defect management","Root-cause analysis","Log analysis"]],
+    "Domains":["Flows where a bug costs real money.",["Stripe payments","Subscriptions","Free trials","In-app purchases","Role-based access"]],
+    "Design":["An eye for UI detail.",["Figma","Canva","Photoshop","Illustrator"]]
+  };
+  var tabs=$('tabs');
+  Object.keys(suites).forEach(function(k,i){
+    var b=document.createElement('button');b.className='tab';b.type='button';b.setAttribute('role','tab');
+    b.setAttribute('aria-selected',i===0?'true':'false');b.textContent=k;
+    b.addEventListener('click',function(){
+      tabs.querySelectorAll('.tab').forEach(function(t){t.setAttribute('aria-selected','false')});
+      b.setAttribute('aria-selected','true');
+      $('p-title').textContent=k;$('p-desc').textContent=suites[k][0];
+      $('p-chips').innerHTML=suites[k][1].map(function(s,n){return '<span class="skill" style="animation-delay:'+(n*40)+'ms">'+esc(s)+'</span>'}).join('');
+    });
+    tabs.appendChild(b);
+  });
+
+  /* ---------- projects ---------- */
+  var projects=[
+    {n:"Talent Source",d:"Recruitment",p:["Web","Android","iOS"],t:["3 portals","Stripe","Multi-user subs","IAP","Roles"],m:"Candidate, employer and admin portals. Ran regression cycles for production releases."},
+    {n:"Positivity Challenge",d:"Habits & community",p:["Web","Android","iOS"],t:["Scheduling","Timezones","Media tasks","Subscriptions"],m:"Timezone-dependent challenge workflows, notifications and admin tools."},
+    {n:"Workout Timer",d:"Fitness",p:["Android","iOS"],t:["Timers","Text-to-speech","Offline","Apple Watch","AI workouts"],m:"Interval and TUT timers, offline mode, AI workouts from videos and Apple Watch sync."},
+    {n:"GymRite BMS",d:"Gym management",p:["Web"],t:["Admin portal","Scheduling","Real-time chat","Tickets"],m:"Admin and member portals, workout copy/paste and complex edge cases."},
+    {n:"Done",d:"Task management",p:["Web"],t:["Permissions","Assignments","Deadlines","Attachments"],m:"End-to-end workspace, project and task flows with member permissions."},
+    {n:"Support Portal",d:"Workforce",p:["Web"],t:["Auth","Roles","Attendance","Payroll"],m:"Authentication, team management, attendance and payroll."}
+  ];
+  var cases=$('cases');
+  cases.innerHTML=projects.map(function(p,i){
+    return '<button type="button" class="case" data-p="'+p.p.join(' ')+'" aria-expanded="false">'+
+      '<div class="case-top"><span class="case-dom">'+esc(p.d)+'</span><span class="result">PASSED</span></div>'+
+      '<h3>'+esc(p.n)+'</h3><div class="plat-row">'+p.p.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>'+
+      '<p class="more">'+esc(p.m)+'</p>'+
+      '<div class="tested">'+p.t.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</div>'+
+      '<span class="toggle">+ details</span></button>';
+  }).join('');
+  cases.querySelectorAll('.case').forEach(function(c){
+    c.addEventListener('click',function(){var o=c.classList.toggle('open');c.setAttribute('aria-expanded',o);c.querySelector('.toggle').textContent=o?'− less':'+ details';});
+  });
+  $('filters').addEventListener('click',function(e){
+    var b=e.target.closest('.filter');if(!b)return;
+    $('filters').querySelectorAll('.filter').forEach(function(f){f.setAttribute('aria-pressed',f===b?'true':'false')});
+    cases.querySelectorAll('.case').forEach(function(c){c.hidden=b.dataset.f!=='all'&&c.dataset.p.split(' ').indexOf(b.dataset.f)<0});
+  });
+
+  /* ---------- journey ---------- */
+  var roles=[
+    {y:"2017",r:"Analyst Software Engineer",c:"e-TeleQuote Insurance",d:"Jan 2017 – Jul 2018<br>Lahore",b:["Built a CRM for 400+ agents","99% uptime","Wrote user manuals and support docs"]},
+    {y:"2018",r:"Software Engineer",c:"e-TeleQuote Insurance",d:"Aug 2018 – Jul 2021<br>Lahore",b:["Built internal company software","Moved legacy systems to new tech","Did QA to catch bugs early"]},
+    {y:"2021",r:"Senior Software Engineer",c:"e-TeleQuote Insurance",d:"Aug 2021 – Oct 2021<br>Lahore",b:["Built n-tier apps in C#, .NET and SQL","Tracked work in Jira","Analyzed logs to find issues"]},
+    {y:"2021",r:"Graphic Designer",c:"Azharul Jannah & Fiverr",d:"Nov 2021 – Aug 2024<br>Remote",b:["35+ orders, five-star rating","Marketing and social media design"]},
+    {y:"2024",r:"QA Engineer",c:"Meta Logix Tech",d:"Sep 2024 – Present<br>Sahiwal",b:["Tests web, Android and iOS apps end to end","Validates APIs with Postman and Swagger","Writes Playwright tests in TypeScript","Tests payments, subscriptions and access roles"],qa:1}
+  ];
+  var tl=$('tl');
+  roles.forEach(function(r,i){
+    var b=document.createElement('button');b.type='button';b.className='node'+(r.qa?' qa':'');b.setAttribute('role','tab');
+    b.setAttribute('aria-selected',i===roles.length-1?'true':'false');
+    b.innerHTML='<i></i><b>'+esc(r.r.replace(' Software Engineer',' SE').replace('Senior SE','Senior SE'))+'</b><span>'+r.y+'</span>';
+    b.addEventListener('click',function(){
+      tl.querySelectorAll('.node').forEach(function(n){n.setAttribute('aria-selected','false')});b.setAttribute('aria-selected','true');
+      $('role').innerHTML='<div><h3>'+esc(r.r)+'</h3><div class="co">'+esc(r.c)+'</div></div><div class="dt">'+r.d+'</div><ul>'+r.b.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>';
+    });
+    tl.appendChild(b);
+  });
+  tl.scrollLeft=tl.scrollWidth;
+
+  /* ---------- copy ---------- */
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=$(b.dataset.copy),txt=el.textContent;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)};
+      var fb=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected';setTimeout(function(){b.textContent='Copy'},1500)};
+      try{navigator.clipboard.writeText(txt).then(done,fb)}catch(e){fb()}
+    });
+  });
+})();
+</script>
+</body>
+</html>
